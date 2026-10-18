@@ -1,0 +1,43 @@
+Display main menu
+    1. Play
+    2. Exit
+
+Loop until user selects Exit
+    Get menu selection
+
+    If Exit selected
+        End program
+
+    If Play selected
+        Randomly select word from predefined list
+        Initialize guess_word with dashes for each letter
+        Initialize attempts to 0
+        Initialize guessed_letters to empty
+
+        Tell user they have 12 attempts to guess the word
+        Display guess_word
+
+        Loop while attempts < 12 AND word not completed
+            Prompt user for a letter
+
+            Validate input
+                Must be a single alphabetic character
+                Must not have been guessed previously
+                If invalid, prompt again
+
+            Add letter to guessed_letters
+            Increment attempts
+
+            If letter exists in selected word
+                Replace corresponding dashes in guess_word
+                with the correctly guessed letter
+
+            Display guess_word
+            Display remaining attempts
+
+        If guess_word equals selected word
+            Display winning message
+        Else
+            Display losing message and reveal word
+
+        Return to main menu

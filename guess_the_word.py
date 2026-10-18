@@ -6,23 +6,56 @@
 
 import random
 
+ATTEMPTS_ALLOWED = 12
 
-def validate_price_and_shares(number_of_shares, stock_price):
+# Create list of 30 words
+WORD_LIST = [
+    "Lantern",
+    "Mountain",
+    "Bicycle",
+    "Whisper",
+    "Elephant",
+    "Treasure",
+    "Notebook",
+    "Sunshine",
+    "Keyboard",
+    "Blanket",
+    "Orchard",
+    "Adventure",
+    "Diamond",
+    "Sandwich",
+    "Horizon",
+    "Pumpkin",
+    "Railroad",
+    "Crystal",
+    "Dolphin",
+    "Festival",
+    "Backpack",
+    "Thunder",
+    "Calendar",
+    "Fireworks",
+    "Library",
+    "Compass",
+    "Painting",
+    "Mushroom",
+    "Hospital",
+    "Waterfall",
+]
+
+
+def select_random_word():
     """
-    Confirms that number of shares and stock price are greater than 0.
+    Randomly select a word from the predefined list.
     """
 
-    # Verify number of shares is greater than 0 and finite
-    if not (0 < number_of_shares < float("inf")):
-        raise ValueError("Number of shares must be positive and finite.")
+    selected_word = random.choice(WORD_LIST)
+    print("Hint:", selected_word)
 
-    # Verify stock price is greater than 0 and finite
-    if not (0 < stock_price < float("inf")):
-        raise ValueError("Stock price must be positive and finite.")
+    return selected_word
 
-def enter_letter():
+def enter_letter(guessed_letters):
     """
-    Guess a letter.
+    Enter a guess letter.
     """
 
     while True:
@@ -31,77 +64,49 @@ def enter_letter():
         if len(letter) != 1 or letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
             print("Error: Letter must be 1 character (A-Z).")
         else:
-            return letter
+            if letter in guessed_letters:
+                print("That letter has already been guessed")
+            else:
+                guessed_letters.add(letter)
+                return letter
 
-def is_letter_valid(secret_word, player_word, letter_guessed):
+def check_word(secret_word, guessed_letters):
+    display_word = ""
 
-    # Is letter in secret word?
-    if letter_guessed in secret_word:
-        print(player_word)
+    for letter in secret_word.upper():
+        if letter in guessed_letters:
+            display_word += letter
+        else:
+            display_word += "_"
 
-        # Now has the letter already been guessed?
-        if letter_guessed in player_word:
-            return False
+    print(secret_word, guessed_letters, display_word)
+    return display_word
+            
+def play_game():
 
-        return True
+    guessed_letters = set()
 
-def play_game(secret_word):
+    attempts = 0
 
-    player_word = ""
+    secret_word = select_random_word()
 
-    allowed_attempts = 12
+    while attempts < ATTEMPTS_ALLOWED:
+        letter = enter_letter(guessed_letters)
 
-    while allowed_attempts > 0:
-        letter = enter_letter()
+        attempts += 1 
 
-        player_word += letter
+        guessed_word = check_word(secret_word, guessed_letters)
 
-        allowed_attempts -= 1 # FIXME need to validate before decrementing
-
-        if is_letter_valid(secret_word, player_word, letter):
-            print(letter)
-
-        if player_word == secret_word.upper():
+        if guessed_word.upper() == secret_word.upper():
             print(f"You won! the word was {secret_word}.")
             return
+        else:
+            print("Your guess so far", guessed_word)
 
     print(f"You lost. The word was {secret_word}.")
 
 def main():
 
-    # Create list of words
-    word_list = [
-        "Lantern",
-        "Mountain",
-        "Bicycle",
-        "Whisper",
-        "Elephant",
-        "Treasure",
-        "Notebook",
-        "Sunshine",
-        "Keyboard",
-        "Blanket",
-        "Orchard",
-        "Adventure",
-        "Diamond",
-        "Sandwich",
-        "Horizon",
-        "Pumpkin",
-        "Railroad",
-        "Crystal",
-        "Dolphin",
-        "Festival",
-        "Backpack",
-        "Thunder",
-        "Calendar",
-        "Fireworks",
-        "Library",
-        "Compass",
-        "Painting",
-        "Mushroom",
-        "Hospital",
-        "Waterfall",
-    ]
     while True:
         print("\n*** Guess the word game ***")
         print("1. Play")
@@ -110,10 +115,7 @@ def main():
         option = input("Select option: ")
 
         if option == "1":
-            # randomly select a word from the list
-            selected_word = random.choice(word_list)
-            print("Hint:", selected_word)
-            play_game(selected_word)
+            play_game()
 
         elif option == "2":
             print("Exiting...")
