@@ -63,9 +63,9 @@ def enter_letter(guessed_letters):
         if len(letter) != 1 or letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
             print("Error: Letter must be 1 character (A-Z).")
         elif letter in guessed_letters:
-            print("That letter has already been guessed")
+            print("That letter has already been guessed.")
         else:
-            #guessed_letters.add(letter)
+            # Return the validated letter
             return letter
 
 def check_word(secret_word, guessed_letters):
@@ -83,6 +83,9 @@ def check_word(secret_word, guessed_letters):
     return display_word
             
 def play_game():
+    """
+    Handle the main game loop and exit when user is successful or runs out of attempts.
+    """
 
     guessed_letters = set()
 
