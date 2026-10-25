@@ -6,7 +6,7 @@
 
 from guess_the_word import (
     WORD_LIST,
-    is_letter_valid,
+    check_word,
     select_random_word,
 )
 
@@ -16,16 +16,27 @@ def test_select_random_word():
 
     assert word in WORD_LIST
 
-def test_is_letter_valid():
+def test_check_word():
     """
-    Check to see if a valid letter passes.
+    Check to see if a valid partial word passes.
     """
 
     secret_word = "Hankypankie"
-    letter = "y"
-    valid_check = is_letter_valid(secret_word, secret_word, letter)
+    guessed_letters = ("Y", "H", "E", "N")
+    display_word = check_word(secret_word, guessed_letters)
 
-    assert valid_check == True
+    assert display_word == "H_N_Y__N__E"
+
+def test_check_word_no_matching_letters():
+    """
+    Check to see if a valid partial word passes.
+    """
+
+    secret_word = "Hankypankie"
+    guessed_letters = ("Z", "O", "T", "C", "U")
+    display_word = check_word(secret_word, guessed_letters)
+
+    assert display_word == "___________"
 
 # def test_calculate_stock_buy_reject_invalid_stock_price():
 #     """

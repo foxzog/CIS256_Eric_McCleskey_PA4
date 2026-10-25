@@ -49,13 +49,12 @@ def select_random_word():
     """
 
     selected_word = random.choice(WORD_LIST)
-    print("Hint:", selected_word)
 
     return selected_word
 
 def enter_letter(guessed_letters):
     """
-    Enter a guess letter.
+    Enter a guess letter and add to guessed letter set.
     """
 
     while True:
@@ -63,14 +62,16 @@ def enter_letter(guessed_letters):
 
         if len(letter) != 1 or letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
             print("Error: Letter must be 1 character (A-Z).")
+        elif letter in guessed_letters:
+            print("That letter has already been guessed")
         else:
-            if letter in guessed_letters:
-                print("That letter has already been guessed")
-            else:
-                guessed_letters.add(letter)
-                return letter
+            #guessed_letters.add(letter)
+            return letter
 
 def check_word(secret_word, guessed_letters):
+    """
+    Return the secret word with unguessed letters replaced by underscores.
+    """
     display_word = ""
 
     for letter in secret_word.upper():
@@ -79,7 +80,6 @@ def check_word(secret_word, guessed_letters):
         else:
             display_word += "_"
 
-    print(secret_word, guessed_letters, display_word)
     return display_word
             
 def play_game():
@@ -92,16 +92,18 @@ def play_game():
 
     while attempts < ATTEMPTS_ALLOWED:
         letter = enter_letter(guessed_letters)
-
+        guessed_letters.add(letter)
         attempts += 1 
 
         guessed_word = check_word(secret_word, guessed_letters)
 
-        if guessed_word.upper() == secret_word.upper():
-            print(f"You won! the word was {secret_word}.")
+        if guessed_word == secret_word.upper():
+            print(f"You won! The word was {secret_word}.")
             return
         else:
-            print("Your guess so far", guessed_word)
+            print(f"Your progress: {attempts}/{ATTEMPTS_ALLOWED} attempts, word: {' '.join(guessed_word)}")
+
+        print(f"Guessed letters: {', '.join(sorted(guessed_letters))}")
 
     print(f"You lost. The word was {secret_word}.")
 

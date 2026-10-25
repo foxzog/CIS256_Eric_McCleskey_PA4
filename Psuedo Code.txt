@@ -9,8 +9,7 @@ Loop until user selects Exit
         End program
 
     If Play selected
-        Randomly select word from predefined list
-        Initialize guess_word with dashes for each letter
+        Randomly select secret word from predefined list
         Initialize attempts to 0
         Initialize guessed_letters to empty
 
@@ -19,23 +18,24 @@ Loop until user selects Exit
 
         Loop while attempts < 12 AND word not completed
             Prompt user for a letter
-
             Validate input
                 Must be a single alphabetic character
                 Must not have been guessed previously
                 If invalid, prompt again
 
-            Add letter to guessed_letters
+	    Add letter to guessed_letters
+
             Increment attempts
+	    Loop through secret word
+		If letter is in guessed_letters
+		   display_word = display_word + letter
+		Else
+		   display_word = display_word + "-"
+	    Display display_word
 
-            If letter exists in selected word
-                Replace corresponding dashes in guess_word
-                with the correctly guessed letter
-
-            Display guess_word
             Display remaining attempts
 
-        If guess_word equals selected word
+        If isplay_word equals secret word
             Display winning message
         Else
             Display losing message and reveal word
